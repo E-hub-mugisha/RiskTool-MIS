@@ -46,29 +46,76 @@
                                     </tr>
 
                                     <!-- Show Modal -->
-                                    <div class="modal fade" id="showRiskModal{{ $risk->id }}">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5>Risk Details</h5>
-                                                    <button class="btn-close" data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <strong>Title:</strong> {{ $risk->title }}<br>
-                                                    <strong>Description:</strong> {{ $risk->description }}<br>
-                                                    <strong>Department:</strong> {{ $risk->department->name ?? 'N/A' }}<br>
-                                                    <strong>Category:</strong> {{ $risk->category->name ?? 'N/A' }}<br>
-                                                    <strong>Likelihood:</strong> {{ $risk->likelihood }}<br>
-                                                    <strong>Impact:</strong> {{ $risk->impact }}<br>
-                                                    <strong>Level:</strong> {{ $risk->level }}<br>
-                                                    <strong>Status:</strong> {{ $risk->status }}
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<div class="modal fade" id="showRiskModal{{ $risk->id }}" tabindex="-1" aria-labelledby="riskModalLabel{{ $risk->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title" id="riskModalLabel{{ $risk->id }}">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Risk Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-card-text me-1 text-primary"></i> Title:</strong>
+                        <div>{{ $risk->title }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-info-circle me-1 text-info"></i> Description:</strong>
+                        <div>{{ $risk->description }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-building me-1 text-secondary"></i> Department:</strong>
+                        <div>{{ $risk->department->name ?? 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-tags me-1 text-warning"></i> Category:</strong>
+                        <div>{{ $risk->category->name ?? 'N/A' }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-graph-up-arrow me-1 text-danger"></i> Likelihood:</strong>
+                        <div>{{ $risk->likelihood }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-lightning-charge-fill me-1 text-danger"></i> Impact:</strong>
+                        <div>{{ $risk->impact }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-flag-fill me-1 text-dark"></i> Level:</strong>
+                        <div>
+                            @php
+                                $levelColors = [
+                                    'Low' => 'success',
+                                    'Medium' => 'warning',
+                                    'High' => 'danger',
+                                    'Critical' => 'dark',
+                                ];
+                            @endphp
+                            <span class="badge bg-{{ $levelColors[$risk->level] ?? 'secondary' }}">
+                                {{ $risk->level }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="bi bi-check-circle me-1 text-success"></i> Status:</strong>
+                        <div>
+                            <span class="badge bg-{{ $risk->status == 'Active' ? 'success' : 'secondary' }}">
+                                {{ $risk->status }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
                                     <!-- Edit Modal -->
                                     <div class="modal fade" id="editRiskModal{{ $risk->id }}">
