@@ -9,7 +9,7 @@ class Risk extends Model
     protected $fillable = [
         'title',
         'description',
-        'department_id',
+        'region_id',
         'category_id',
         'likelihood',
         'impact',
@@ -17,9 +17,9 @@ class Risk extends Model
         'status'
     ];
 
-    public function department()
+    public function region()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Region::class);
     }
 
     public function category()

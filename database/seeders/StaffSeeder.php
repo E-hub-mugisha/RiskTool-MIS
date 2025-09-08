@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Department;
+use App\Models\Region;
 use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,13 +18,13 @@ class StaffSeeder extends Seeder
     {
         $positions = ['Analyst', 'Coordinator', 'Manager', 'Technician', 'Supervisor'];
 
-        // Get all users and departments
+        // Get all users and regions
         $users = User::all();
-        $departments = Department::all();
+        $regions = Region::all();
 
-        // Ensure we have users and departments
-        if ($users->isEmpty() || $departments->isEmpty()) {
-            $this->command->warn('No users or departments found. Please seed users and departments first.');
+        // Ensure we have users and regions
+        if ($users->isEmpty() || $regions->isEmpty()) {
+            $this->command->warn('No users or regions found. Please seed users and regions first.');
             return;
         }
 
@@ -35,7 +36,7 @@ class StaffSeeder extends Seeder
                 'email' => $user->email,
                 'phone' => '0788' . rand(100000, 999999),
                 'position' => $positions[array_rand($positions)],
-                'department_id' => $departments->random()->id,
+                'department_id' => $regions->random()->id,
             ]);
         }
     }

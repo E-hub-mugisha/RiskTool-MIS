@@ -1,12 +1,8 @@
-@php
-use Illuminate\Support\Facades\Auth;
-@endphp
-
 <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
         <div class="logo-header" data-background-color="dark">
             <a href="{{ route('dashboard') }}" class="logo">
-                {{ config('app.name', 'MIS Dashboard') }}
+                {{ config('app.name', 'Dashboard') }}
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -37,11 +33,10 @@ use Illuminate\Support\Facades\Auth;
                     <h4 class="text-section">Components</h4>
                 </li>
 
-                {{-- Admin only --}}
-                @if (Auth::check() && Auth::user()->role == 'admin')
+
                 <li class="nav-item">
-                    <a href="{{ route('departments.index') }}">
-                        <p>Departments</p>
+                    <a href="{{ route('regions.index') }}">
+                        <p>Regions</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -59,16 +54,33 @@ use Illuminate\Support\Facades\Auth;
                         <p>Staff</p>
                     </a>
                 </li>
-                @endif
 
-                {{-- Admin, Risk Manager, Department Head --}}
-                @if (Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'Risk Manager' || Auth::user()->role == 'Department Head'))
-                
                 <li class="nav-item">
                     <a href="{{ route('risks.index') }}">
-                        <p>Risks</p>
+                        <p>Incidents</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('resources.index') }}">
+                        <p>Resources</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('requests.index') }}">
+                        <p>Resource Requests</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('allocations.index') }}">
+                        <p>Resource Allocations</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('shipments.index') }}">
+                        <p>Resource Shipments</p>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('mitigations.index') }}">
                         <p>Mitigations</p>
@@ -79,10 +91,6 @@ use Illuminate\Support\Facades\Auth;
                         <p>Monitoring</p>
                     </a>
                 </li>
-                @endif
-
-                {{-- Staff --}}
-                @if (Auth::check() && Auth::user()->role == 'Staff')
                 <li class="nav-item">
                     <a href="{{ route('risks.index') }}">
                         <p>My Risks</p>
@@ -98,10 +106,6 @@ use Illuminate\Support\Facades\Auth;
                         <p>Monitoring</p>
                     </a>
                 </li>
-                @endif
-
-                {{-- Auditor --}}
-                @if (Auth::check() && Auth::user()->role == 'Auditor')
                 <li class="nav-item">
                     <a href="{{ route('risks.index') }}">
                         <p>View Risks</p>
@@ -112,7 +116,6 @@ use Illuminate\Support\Facades\Auth;
                         <p>Audit Logs</p>
                     </a>
                 </li>
-                @endif
 
             </ul>
         </div>

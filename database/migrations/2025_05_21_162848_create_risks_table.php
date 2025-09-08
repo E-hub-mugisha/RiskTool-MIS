@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
+            $table->foreignId('region_id')->constrained('regions')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->enum('likelihood', ['Low', 'Medium', 'High']);
             $table->enum('impact', ['Low', 'Medium', 'High']);

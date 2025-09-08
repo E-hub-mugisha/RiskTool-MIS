@@ -34,12 +34,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/export/excel', [DashboardController::class, 'exportExcel'])->name('dashboard.export.excel');
     Route::get('/dashboard/export/pdf', [DashboardController::class, 'exportPDF'])->name('dashboard.export.pdf');
 
-    Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
-    Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
-    Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
-    Route::get('/departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
-    Route::put('/departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
-    Route::delete('/departments/{department}', [DepartmentController::class, 'destroy'])->name('departments.destroy');
+    Route::get('/regions', [DepartmentController::class, 'index'])->name('regions.index');
+    Route::get('/regions/create', [DepartmentController::class, 'create'])->name('regions.create');
+    Route::post('/regions', [DepartmentController::class, 'store'])->name('regions.store');
+    Route::get('/regions/{region}/edit', [DepartmentController::class, 'edit'])->name('regions.edit');
+    Route::put('/regions/{region}', [DepartmentController::class, 'update'])->name('regions.update');
+    Route::delete('/regions/{region}', [DepartmentController::class, 'destroy'])->name('regions.destroy');
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
@@ -75,6 +75,31 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/mitigations/{mitigation}', [MitigationController::class, 'destroy'])->name('mitigations.destroy');
 
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.index');
+
+    // Resources Routes
+    Route::get('/resources', [DepartmentController::class, 'indexResource'])->name('resources.index');
+    Route::post('/resources', [DepartmentController::class, 'storeResource'])->name('resources.store');
+    Route::put('/resources/{resource}', [DepartmentController::class, 'updateResource'])->name('resources.update');
+    Route::delete('/resources/{resource}', [DepartmentController::class, 'destroyResource'])->name('resources.destroy');
+
+    Route::get('/requests', [RiskController::class, 'indexRequest'])->name('requests.index');
+    Route::post('/requests', [RiskController::class, 'storeRequest'])->name('requests.store');
+    Route::get('/requests/{id}', [RiskController::class, 'showRequest'])->name('requests.show');
+    Route::put('/requests/{id}/approve', [RiskController::class, 'approveRequest'])->name('requests.approve');
+    Route::post('/requests/{id}/reject', [RiskController::class, 'rejectRequest'])->name('requests.reject');
+
+    // Allocations
+    Route::get('/allocations', [RiskController::class, 'indexAllocation'])->name('allocations.index');
+    Route::get('/allocations/{id}', [RiskController::class, 'showAllocation'])->name('allocations.show');
+    Route::get('/allocations/{id}/recommend', [RiskController::class, 'recommend'])->name('allocations.recommend');
+    Route::put('/allocations/{allocation}/approve', [RiskController::class, 'approveAllocation'])->name('allocations.approve');
+    Route::post('/allocations/{allocation}/reject', [RiskController::class, 'rejectAllocation'])->name('allocations.reject');
+
+    // Shipments
+    Route::get('/shipments', [RiskController::class, 'indexShipment'])->name('shipments.index');
+    Route::get('/shipments/{id}', [RiskController::class, 'showShipment'])->name('shipments.show');
+    Route::get('/shipments/create', [RiskController::class, 'createShipment'])->name('shipments.create');
+    Route::post('/shipments', [RiskController::class, 'storeShipment'])->name('shipments.store');
 });
 
 

@@ -14,16 +14,12 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Financial', 'description' => 'Risks related to financial activities.'],
-            ['name' => 'Operational', 'description' => 'Risks arising from operations and logistics.'],
-            ['name' => 'Compliance', 'description' => 'Risks related to laws, regulations, and policies.'],
-            ['name' => 'Strategic', 'description' => 'Risks that affect business direction or goals.'],
-            ['name' => 'IT & Cybersecurity', 'description' => 'Technology-related threats including breaches and outages.'],
-            ['name' => 'Reputation', 'description' => 'Risks impacting company image or stakeholder trust.'],
-            ['name' => 'Health & Safety', 'description' => 'Employee and environmental safety concerns.'],
-            ['name' => 'Project', 'description' => 'Risks associated with ongoing or upcoming projects.'],
-            ['name' => 'Environmental', 'description' => 'Risks involving natural disasters or environmental issues.'],
-            ['name' => 'Legal', 'description' => 'Litigation or legal non-compliance risks.'],
+            ['name' => 'Flood', 'description' => 'Risks related to flooding events.'],
+            ['name' => 'Earthquake', 'description' => 'Risks arising from earthquakes.'],
+            ['name' => 'Fire', 'description' => 'Risks related to fires and wildfires.'],
+            ['name' => 'Epidemic', 'description' => 'Risks related to disease outbreaks.'],
+            ['name' => 'Landslide', 'description' => 'Risks related to landslides and mudslides.'],
+            ['name' => 'Others', 'description' => 'Risks impacting company image or stakeholder trust.'],
         ];
 
         foreach ($categories as $category) {

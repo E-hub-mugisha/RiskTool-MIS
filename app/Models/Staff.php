@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Staff extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'email', 'phone', 'position', 'department_id'
+        'user_id', 'name', 'email', 'phone', 'position', 'region_id'
     ];
 
-    public function department()
+    public function region()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Region::class, 'region_id');
     }
 
     public function user()

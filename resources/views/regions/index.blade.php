@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Departments')
+@section('title','Regions')
 @section('content')
 
 <div class="container">
@@ -8,16 +8,16 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Department Management</h2>
+                        <h4 class="card-title">Regions Management</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <!-- Add Department Button -->
-                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
-                                Add Department
+                            <!-- Add Regions Button -->
+                            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRegionsModal">
+                                Add Regions
                             </button>
 
-                            <!-- Departments Table -->
+                            <!-- Regionss Table -->
                             <table id="basic-datatables" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
@@ -28,17 +28,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($departments as $index => $department)
+                                    @foreach ($regions as $index => $region)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $department->name }}</td>
-                                        <td>{{ $department->description }}</td>
+                                        <td>{{ $region->name }}</td>
+                                        <td>{{ $region->description }}</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editDepartmentModal{{ $department->id }}">Edit</button>
+                                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editRegionsModal{{ $region->id }}">Edit</button>
 
                                             <!-- Delete -->
-                                            <form action="{{ route('departments.destroy', $department->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('regions.destroy', $region->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
@@ -47,24 +47,24 @@
                                     </tr>
 
                                     <!-- Edit Modal -->
-                                    <div class="modal fade" id="editDepartmentModal{{ $department->id }}" tabindex="-1" aria-labelledby="editLabel{{ $department->id }}" aria-hidden="true">
+                                    <div class="modal fade" id="editRegionsModal{{ $region->id }}" tabindex="-1" aria-labelledby="editLabel{{ $region->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <form action="{{ route('departments.update', $department->id) }}" method="POST">
+                                            <form action="{{ route('regions.update', $region->id) }}" method="POST">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editLabel{{ $department->id }}">Edit Department</h5>
+                                                        <h5 class="modal-title" id="editLabel{{ $region->id }}">Edit Regions</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="mb-3">
-                                                            <label for="editName{{ $department->id }}" class="form-label">Name</label>
-                                                            <input type="text" id="editName{{ $department->id }}" name="name" class="form-control" value="{{ $department->name }}" required>
+                                                            <label for="editName{{ $region->id }}" class="form-label">Name</label>
+                                                            <input type="text" id="editName{{ $region->id }}" name="name" class="form-control" value="{{ $region->name }}" required>
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label for="editDesc{{ $department->id }}" class="form-label">Description</label>
-                                                            <textarea id="editDesc{{ $department->id }}" name="description" class="form-control" rows="4">{{ $department->description }}</textarea>
+                                                            <label for="editDesc{{ $region->id }}" class="form-label">Description</label>
+                                                            <textarea id="editDesc{{ $region->id }}" name="description" class="form-control" rows="4">{{ $region->description }}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -85,19 +85,19 @@
         </div>
     </div>
     <!-- Add Modal -->
-    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
+    <div class="modal fade" id="addRegionsModal" tabindex="-1" aria-labelledby="addLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('departments.store') }}" method="POST">
+            <form action="{{ route('regions.store') }}" method="POST">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addLabel">Add Department</h5>
+                        <h5 class="modal-title" id="addLabel">Add Regions</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="addName" class="form-label">Name</label>
-                            <input type="text" id="addName" name="name" class="form-control" placeholder="Department Name" required>
+                            <input type="text" id="addName" name="name" class="form-control" placeholder="Regions Name" required>
                         </div>
                         <div class="mb-3">
                             <label for="addDesc" class="form-label">Description</label>
