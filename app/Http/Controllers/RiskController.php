@@ -80,54 +80,89 @@ class RiskController extends Controller
         return view('resources.requests', compact('requests', 'regions', 'resources'));
     }
 
-    public function storeRequest(Request $request)
+    public function RequestResources(Request $request)
     {
         $request->validate([
-            'region_id' => 'required|exists:regions,id',
-            'item' => 'required|string',
-            'quantity' => 'required|integer|min:1',
+            'region_id'   => 'required',
+            'resource_id' => 'required',
+            'quantity'    => 'required',
         ]);
 
-        ResourceRequest::create($request->all());
+
+        $resource = Resource::findOrFail($request->resource_id);
+
+        // ✅ Backend validation: Ensure not requesting more than available stock
+        if ($request->quantity > $resource->quantity) {
+            return back()->withErrors([
+                'quantity' => "Requested quantity exceeds available stock (max {$resource->quantity})."
+            ])->withInput();
+        }
+
+        ResourceRequest::create([
+            'region_id'     => $request->region_id,
+            'resource_id'   => $resource->id,
+            'quantity'      => $request->quantity,
+            'status'        => 'pending',
+            'justification' => $request->justification,
+        ]);
+
 
         return back()->with('success', 'Request submitted successfully!');
     }
 
-    public function approveRequest(ResourceRequest $req)
+    public function byRegion($regionId)
     {
+        $resources = \App\Models\Resource::where('region_id', $regionId)->get();
+        return response()->json($resources);
+    }
 
+
+    public function approveRequest($id)
+    {
+        $req = ResourceRequest::findOrFail($id);
         $req->update(['status' => 'approved']);
         return back()->with('success', 'Request approved.');
     }
 
-    public function rejectRequest(ResourceRequest $req)
+    public function rejectRequest($id)
     {
+        $req = ResourceRequest::findOrFail($id);
         $req->update(['status' => 'rejected']);
         return back()->with('error', 'Request rejected.');
     }
 
     public function recommend($requestId)
     {
+        // Fetch the resource request
         $req = ResourceRequest::findOrFail($requestId);
-        $resources = Resource::where('item', $req->item)->get();
 
-        $allocations = [];
-        foreach ($resources as $resource) {
-            $allocated = min($resource->quantity, $req->quantity);
-            if ($allocated > 0) {
-                $allocations[] = ResourceAllocation::create([
-                    'request_id' => $req->id,
-                    'resource_id' => $resource->id,
-                    'allocated_quantity' => $allocated,
-                    'status' => 'recommended'
-                ]);
-                $req->quantity -= $allocated;
-                if ($req->quantity <= 0) break;
-            }
+        // Fetch the requested resource
+        $resource = Resource::findOrFail($req->resource_id);
+
+        // Determine how much to allocate (cannot exceed either request quantity or available stock)
+        $allocatedQuantity = min($resource->quantity, $req->quantity);
+
+        if ($allocatedQuantity > 0) {
+            // Create allocation
+            ResourceAllocation::create([
+                'request_id' => $req->id,
+                'resource_id' => $resource->id,
+                'allocated_quantity' => $allocatedQuantity,
+                'status' => 'recommended',
+            ]);
+
+            // Optionally, you may reduce the resource stock
+            $resource->quantity -= $allocatedQuantity;
+            $resource->save();
+
+            // Update request quantity if needed
+            $req->quantity -= $allocatedQuantity;
+            $req->save();
         }
 
-        return redirect()->route('allocations.index')->with('success', 'System generated recommendations.');
+        return redirect()->route('allocations.index')->with('success', 'System generated recommendation successfully.');
     }
+
 
     public function approveAllocation(ResourceAllocation $allocation)
     {
@@ -144,8 +179,11 @@ class RiskController extends Controller
 
     public function indexAllocation()
     {
-        $allocations = ResourceAllocation::with('request', 'resource')->latest()->get();
+        // Fetch all allocations with related request and resource
+        $allocations = ResourceAllocation::with(['request.region', 'resource'])->latest()->get();
+
         $staff = Staff::all();
+
         return view('resources.allocations', compact('allocations', 'staff'));
     }
 
@@ -164,8 +202,8 @@ class RiskController extends Controller
     public function storeShipment(Request $request)
     {
         $request->validate([
-            'allocation_id' => 'required|exists:resource_allocations,id',
-            'shipped_by' => 'required|exists:staff,id',
+            'allocation_id' => 'required',
+            'shipped_by' => 'required',
         ]);
 
         $trackNumber = 'TRK' . strtoupper(uniqid());

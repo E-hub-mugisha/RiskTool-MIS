@@ -16,7 +16,7 @@
 
                 {{-- Summary Cards --}}
                 <div class="row mb-4">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card text-white bg-primary mb-3">
                             <div class="card-body">
                                 <h5 class="card-title">Total Users</h5>
@@ -25,7 +25,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card text-white bg-danger mb-3">
                             <div class="card-body">
                                 <h5 class="card-title">Total Risks</h5>
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card text-white bg-success mb-3">
                             <div class="card-body">
                                 <h5 class="card-title">Total Mitigations</h5>
@@ -43,40 +43,27 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="card text-white bg-secondary mb-3">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary shadow">
                             <div class="card-body">
-                                <h5 class="card-title">Departments</h5>
-                                <p class="card-text fs-3">{{ $totalDepartments }}</p>
+                                <h5>Current Stocks</h5>
+                                <p>{{ $resources->sum('quantity') }} items available</p>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                {{-- Charts --}}
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <canvas id="mitigationStatusChart"></canvas>
-                    </div>
-
-                    <div class="col-md-6">
-                        <canvas id="monthlyTrendChart"></canvas>
-                    </div>
-                </div>
-
-                {{-- Active Risks Without Mitigation --}}
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <div class="card border-danger">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-warning shadow">
                             <div class="card-body">
-                                <h5 class="card-title text-danger">Active Risks Without Mitigation</h5>
-                                <ul class="mb-0">
-                                    @forelse($risksWithoutMitigation as $risk)
-                                    <li>{{ $risk->title }} (Department: {{ $risk->department->name ?? '-' }})</li>
-                                    @empty
-                                    <li>All active risks are mitigated.</li>
-                                    @endforelse
-                                </ul>
+                                <h5>Pending Requests</h5>
+                                <p>{{ $pendingRequests }} requests</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success shadow">
+                            <div class="card-body">
+                                <h5>Deliveries In-Transit</h5>
+                                <p>{{ $inTransitDeliveries }} deliveries</p>
                             </div>
                         </div>
                     </div>
@@ -93,7 +80,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Title</th>
-                                                <th>Department</th>
                                                 <th>Category</th>
                                                 <th>Likelihood</th>
                                                 <th>Impact</th>
@@ -104,7 +90,6 @@
                                             @forelse($recentRisks as $risk)
                                             <tr>
                                                 <td>{{ $risk->title }}</td>
-                                                <td>{{ $risk->department->name ?? '-' }}</td>
                                                 <td>{{ $risk->category->name ?? '-' }}</td>
                                                 <td>{{ $risk->likelihood }}</td>
                                                 <td>{{ $risk->impact }}</td>
@@ -122,73 +107,32 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Optional: Stock chart --}}
+    <div class="mt-4 card shadow py-4 px-4">
+        <canvas id="stockChart"></canvas>
+    </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
 
-@section('scripts')
+    
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Mitigation Status Pie Chart
-    const statusCtx = document.getElementById('mitigationStatusChart').getContext('2d');
-    new Chart(statusCtx, {
-        type: 'pie',
+    const ctx = document.getElementById('stockChart').getContext('2d');
+    const stockChart = new Chart(ctx, {
+        type: 'bar',
         data: {
-            labels: {
-                !!json_encode(array_keys($statusSummary)) !!
-            },
+            labels: @json($resources -> pluck('item')),
             datasets: [{
-                label: 'Mitigation Status',
-                data: {
-                    !!json_encode(array_values($statusSummary)) !!
-                },
-                backgroundColor: ['#0d6efd', '#ffc107', '#198754', '#dc3545'],
-                borderWidth: 1
+                label: 'Stock Quantity',
+                data: @json($resources -> pluck('quantity')),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
             }]
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-                title: {
-                    display: true,
-                    text: 'Mitigation Status Overview'
-                }
-            }
-        }
-    });
-
-    // Monthly Line Chart
-    const monthCtx = document.getElementById('monthlyTrendChart').getContext('2d');
-    new Chart(monthCtx, {
-        type: 'line',
-        data: {
-            labels: {
-                !!json_encode(array_keys($monthlyData)) !!
-            }, // month names (Jan, Feb...)
-            datasets: [{
-                label: 'Mitigations Created',
-                data: {
-                    !!json_encode(array_values($monthlyData)) !!
-                }, // counts per month
-                borderColor: '#0d6efd',
-                fill: false,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Monthly Mitigation Trends (' + new Date().getFullYear() + ')'
-                }
-            }
-        }
     });
 </script>
+
 @endsection

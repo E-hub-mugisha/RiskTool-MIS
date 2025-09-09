@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Mitigation;
+use App\Models\Resource;
+use App\Models\ResourceRequest;
 use App\Models\Risk;
+use App\Models\Shipment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -42,7 +45,7 @@ class DashboardController extends Controller
         $monthlyData = array_combine($monthLabels, $monthValues);
 
         // Latest 5 risks
-        $recentRisks = Risk::with(['department', 'category'])
+        $recentRisks = Risk::with(['region', 'category'])
             ->latest()
             ->take(5)
             ->get();
@@ -53,6 +56,15 @@ class DashboardController extends Controller
             ->with('department')
             ->get();
 
+        // Current stock per resource
+        $resources = Resource::all();
+
+        // Outstanding requests
+        $pendingRequests = ResourceRequest::where('status', 'pending')->count();
+
+        // Deliveries in-transit
+        $inTransitDeliveries = Shipment::where('status', 'in_transit')->count();
+
         return view('dashboard.admin', compact(
             'totalUsers',
             'totalRisks',
@@ -62,9 +74,10 @@ class DashboardController extends Controller
             'recentRisks',
             'months',
             'monthlyData',
-            'risksWithoutMitigation'
+            'risksWithoutMitigation',
+            'resources',
+            'pendingRequests',
+            'inTransitDeliveries'
         ));
     }
-
-    
 }

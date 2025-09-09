@@ -82,41 +82,25 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('mitigations.index') }}">
-                        <p>Mitigations</p>
+                    <a href="{{ route('beneficiaries.index') }}">
+                        <p>Beneficiaries</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('monitoring.index') }}">
-                        <p>Monitoring</p>
+                    <a href="{{ route('distribution_points.index') }}">
+                        <p>Distribution Points</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('risks.index') }}">
-                        <p>My Risks</p>
+                    <a href="{{ route('distributions.index') }}">
+                        <p>Distributions</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('mitigations.index') }}">
-                        <p>Mitigations</p>
+                    <a href="{{ route('reports.index') }}">
+                        <p>Reports</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('monitoring.index') }}">
-                        <p>Monitoring</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('risks.index') }}">
-                        <p>View Risks</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('monitoring.index') }}">
-                        <p>Audit Logs</p>
-                    </a>
-                </li>
-
             </ul>
         </div>
     </div>

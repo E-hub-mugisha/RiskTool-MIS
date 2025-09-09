@@ -21,7 +21,7 @@
                     {{-- Body --}}
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle table-bordered table-striped">
+                            <table id="basic-datatables" class="table table-hover align-middle table-bordered table-striped">
                                 <thead class="table-light text-center">
                                     <tr>
                                         <th>#</th>

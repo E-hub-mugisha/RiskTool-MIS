@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuditController;
+use App\Http\Controllers\BeneficiariesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MitigationController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\RiskController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
@@ -83,15 +85,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/resources/{resource}', [DepartmentController::class, 'destroyResource'])->name('resources.destroy');
 
     Route::get('/requests', [RiskController::class, 'indexRequest'])->name('requests.index');
-    Route::post('/requests', [RiskController::class, 'storeRequest'])->name('requests.store');
+    Route::post('/store/request/resources', [RiskController::class, 'RequestResources'])->name('storeRequestResources');
     Route::get('/requests/{id}', [RiskController::class, 'showRequest'])->name('requests.show');
     Route::put('/requests/{id}/approve', [RiskController::class, 'approveRequest'])->name('requests.approve');
     Route::post('/requests/{id}/reject', [RiskController::class, 'rejectRequest'])->name('requests.reject');
+    Route::get('/get/regions/{region}/resources', [RiskController::class, 'byRegion']);
 
     // Allocations
     Route::get('/allocations', [RiskController::class, 'indexAllocation'])->name('allocations.index');
     Route::get('/allocations/{id}', [RiskController::class, 'showAllocation'])->name('allocations.show');
-    Route::get('/allocations/{id}/recommend', [RiskController::class, 'recommend'])->name('allocations.recommend');
+    Route::get('/allocations/recommend/{id}', [RiskController::class, 'recommend'])->name('allocations.recommend');
     Route::put('/allocations/{allocation}/approve', [RiskController::class, 'approveAllocation'])->name('allocations.approve');
     Route::post('/allocations/{allocation}/reject', [RiskController::class, 'rejectAllocation'])->name('allocations.reject');
 
@@ -100,6 +103,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/shipments/{id}', [RiskController::class, 'showShipment'])->name('shipments.show');
     Route::get('/shipments/create', [RiskController::class, 'createShipment'])->name('shipments.create');
     Route::post('/shipments', [RiskController::class, 'storeShipment'])->name('shipments.store');
+    Route::delete('/shipments/{shipment}', [RiskController::class, 'destroyShipment'])->name('shipments.destroy');
+
+    // beneficiaries
+    Route::get('/beneficiaries', [BeneficiariesController::class, 'index'])->name('beneficiaries.index');
+    Route::post('/beneficiaries', [BeneficiariesController::class, 'store'])->name('beneficiaries.store');
+    Route::put('/beneficiaries/{beneficiary}', [BeneficiariesController::class, 'update'])->name('beneficiaries.update');
+    Route::delete('/beneficiaries/{beneficiary}', [BeneficiariesController::class, 'destroy'])->name('beneficiaries.destroy');
+
+    // distribution points
+    Route::get('/distribution-points', [BeneficiariesController::class, 'distributionPoints'])->name('distribution_points.index');
+    Route::post('/distribution-points', [BeneficiariesController::class, 'storeDistributionPoint'])->name('distribution_points.store');
+    Route::put('/distribution-points/{distributionPoint}', [BeneficiariesController::class, 'updateDistributionPoint'])->name('distribution_points.update');
+    Route::delete('/distribution-points/{distributionPoint}', [BeneficiariesController::class, 'destroyDistributionPoint'])->name('distribution_points.destroy');
+
+    // distributions
+    Route::get('/distributions', [BeneficiariesController::class, 'indexDistribution'])->name('distributions.index');
+    Route::get('/distributions/create', [BeneficiariesController::class, 'createDistribution'])->name('distributions.create');
+    Route::post('/distributions', [BeneficiariesController::class, 'storeDistribution'])->name('distributions.store');
+    Route::get('/distributions/{distribution}', [BeneficiariesController::class, 'showDistribution'])->name('distributions.show');
+    Route::put('/distributions/{distribution}', [BeneficiariesController::class, 'updateDistribution'])->name('distributions.update');
+    Route::delete('/distributions/{distribution}', [BeneficiariesController::class, 'destroyDistribution'])->name('distributions.destroy');
+
+    Route::get('/reports', [ReportingController::class, 'index'])->name('reports.index');
+    Route::get('/reports/export/excel', [ReportingController::class, 'exportExcel'])->name('reports.export.excel');
+    Route::get('/reports/export/pdf', [ReportingController::class, 'exportPDF'])->name('reports.export.pdf');
+    Route::get('/reports/export/csv', [ReportingController::class, 'exportCSV'])->name('reports.export.csv');
 });
 
 

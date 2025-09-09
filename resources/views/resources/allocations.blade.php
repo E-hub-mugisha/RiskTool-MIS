@@ -9,7 +9,7 @@
             <h5 class="card-title">Resource Allocations</h5>
             <div class="card-tools">
                 <button class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addAllocationModal">
-                    <i class="bi bi-plus-lg"></i>
+                    <i class="bi bi-plus-lg"></i> Add Allocation
                 </button>
             </div>
         </div>
@@ -78,8 +78,8 @@
                                     <div class="modal-body">
                                         <input type="hidden" name="allocation_id" value="{{ $allocation->id }}">
                                         <div class="mb-3">
-                                            <label for="staff_id{{ $allocation->id }}" class="form-label">Shipped By (Staff)</label>
-                                            <select class="form-select" id="staff_id{{ $allocation->id }}" name="staff_id" required>
+                                            <label for="shipped_by{{ $allocation->id }}" class="form-label">Shipped By (Staff)</label>
+                                            <select class="form-select" id="shipped_by{{ $allocation->id }}" name="shipped_by" required>
                                                 <option value="">Select Staff</option>
                                                 @foreach($staff as $member)
                                                 <option value="{{ $member->id }}">{{ $member->name }}</option>

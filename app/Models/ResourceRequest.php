@@ -6,13 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class ResourceRequest extends Model
 {
-    protected $fillable = ['region_id','item','quantity','status','justification'];
+    protected $fillable = ['region_id', 'resource_id', 'quantity', 'status', 'justification'];
 
-    public function region() {
+    public function region()
+    {
         return $this->belongsTo(Region::class);
     }
 
-    public function allocations() {
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class);
+    }
+
+    public function allocations()
+    {
         return $this->hasMany(ResourceAllocation::class);
     }
 }
