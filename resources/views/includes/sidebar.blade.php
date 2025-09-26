@@ -2,7 +2,7 @@
     <div class="sidebar-logo">
         <div class="logo-header" data-background-color="dark">
             <a href="{{ route('dashboard') }}" class="logo">
-                {{ config('app.name', 'Dashboard') }}
+                {{ config('app.name', 'DRRAIS') }}
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">

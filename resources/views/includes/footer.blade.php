@@ -4,7 +4,7 @@
             <ul class="nav">
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="{{ url('/') }}">
-                        {{ config('app.name', 'MIS Dashboard') }}
+                        {{ config('app.name', 'Disaster Relief Resources Allocation Information System') }}
                     </a>
                 </li>
                 <li class="nav-item">
@@ -17,11 +17,8 @@
         </nav>
 
         <div class="text-muted small">
-            &copy; {{ date('Y') }} {{ config('app.name', 'MIS System') }}. All rights reserved.
+            &copy; {{ date('Y') }} {{ config('app.name', 'Disaster Relief Resources Allocation Information System') }}. All rights reserved.
         </div>
 
-        <!-- <div class="text-muted small">
-            Developed with <i class="fa fa-heart text-danger"></i> by <a href="mailto:kericmugisha@gmail.com">Eric Mugisha</a>
-        </div> -->
     </div>
 </footer>
