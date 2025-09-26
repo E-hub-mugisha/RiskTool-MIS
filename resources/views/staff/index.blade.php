@@ -44,7 +44,7 @@
                                         <td>{{ $member->email }}</td>
                                         <td>{{ $member->phone }}</td>
                                         <td>{{ $member->position }}</td>
-                                        <td>{{ $member->department->name ?? 'N/A' }}</td>
+                                        <td>{{ $member->department }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editStaffModal{{ $member->id }}">Edit</button>
                                             <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteStaffModal{{ $member->id }}">Delete</button>
@@ -91,13 +91,7 @@
                                                         </div>
                                                         <div class="form-group mb-3">
                                                             <label>Department</label>
-                                                            <select name=" department_id" class="form-select" required>
-                                                            @foreach($departments as $dept)
-                                                            <option value="{{ $dept->id }}" {{ $member->department_id == $dept->id ? 'selected' : '' }}>
-                                                                {{ $dept->name }}
-                                                            </option>
-                                                            @endforeach
-                                                            </select>
+                                                            <input type="text" name="department" value="{{ $member->department }}" class="form-control" placeholder="department">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -178,12 +172,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Department</label>
-                            <select name="department_id" class="form-select" required>
-                                <option value="" disabled selected>Select department</option>
-                                @foreach($departments as $dept)
-                                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" name="department" class="form-control" placeholder="department">
                         </div>
                     </div>
                     <div class="modal-footer">

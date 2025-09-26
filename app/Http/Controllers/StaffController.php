@@ -16,7 +16,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staff = Staff::with('department')->latest()->get();
+        $staff = Staff::latest()->get();
         $users = User::all();
         $departments = Department::all();
         return view('staff.index', compact('staff', 'departments', 'users'));
@@ -33,7 +33,7 @@ class StaffController extends Controller
             'email' => 'required|email|unique:staff,email',
             'phone' => 'nullable|string|max:20',
             'position' => 'nullable|string|max:100',
-            'department_id' => 'required|exists:departments,id',
+            'department' => 'required|string',
         ]);
 
         Staff::create($request->all());
@@ -54,7 +54,7 @@ class StaffController extends Controller
             'email' => 'required|email|unique:staff,email,' . $staff->id,
             'phone' => 'nullable|string|max:20',
             'position' => 'nullable|string|max:100',
-            'department_id' => 'required|exists:departments,id',
+            'department' => 'required|string',
         ]);
 
         $staff->update($request->all());
