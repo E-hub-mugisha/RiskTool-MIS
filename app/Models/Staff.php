@@ -10,8 +10,6 @@ class Staff extends Model
         'user_id', 'name', 'email', 'phone', 'position', 'department'
     ];
 
-    
-
     public function user()
     {
         return $this->belongsTo(User::class);

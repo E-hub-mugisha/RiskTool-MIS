@@ -29,9 +29,7 @@
         <a href="{{ route('reports.export.pdf', request()->all()) }}" class="btn btn-danger btn-sm">
             <i class="bi bi-file-earmark-pdf"></i> Export PDF
         </a>
-        <a href="{{ route('reports.export.csv', request()->all()) }}" class="btn btn-success btn-sm">
-            <i class="bi bi-file-earmark-excel"></i> Export CSV
-        </a>
+        
     </div>
 
     <canvas id="summaryChart" height="100"></canvas>
